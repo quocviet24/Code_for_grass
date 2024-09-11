@@ -1,6 +1,5 @@
 body {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -17,7 +16,6 @@ body {
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  margin-bottom: 20px;
 }
 
 .flap {
@@ -32,6 +30,16 @@ body {
   transition: transform 0.6s ease;
 }
 
+.body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
 .letter {
   position: absolute;
   top: 100%; /* Bức thư ban đầu được ẩn hoàn toàn */
@@ -44,36 +52,7 @@ body {
   padding: 20px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   transition: top 0.6s ease;
-}
-
-.heart {
-  width: 100px; /* Tăng kích thước trái tim */
-  height: 100px;
-  background-color: red;
-  position: relative;
-  margin: 0 auto;
-  top: 0;
-  animation: heartbeat 1s infinite;
-}
-
-.heart:before,
-.heart:after {
-  content: "";
-  width: 100px;
-  height: 160px;
-  background-color: red;
-  border-radius: 50%;
-  position: absolute;
-}
-
-.heart:before {
-  top: -50px;
-  left: -50px;
-}
-
-.heart:after {
-  top: -50px;
-  right: -50px;
+  z-index: 2;
 }
 
 @keyframes heartbeat {
@@ -97,7 +76,8 @@ body {
   font-family: 'Arial', sans-serif;
   font-size: 18px;
   color: #333;
-  margin-top: 20px;
+  position: absolute;
+  text-align: center;
   transition: opacity 0.6s ease;
 }
 
@@ -112,4 +92,70 @@ body {
 .hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.heart {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  top: 20px; /* Điều chỉnh vị trí lên một chút */
+  left: calc(50% - 50px); /* Căn giữa */
+  background-color: #1e90ff; /* Màu xanh dương */
+  transform: rotate(-45deg);
+  transition: opacity 0.6s ease, transform 0.6s ease; /* Thêm hiệu ứng khi trái tim xuất hiện */
+  opacity: 0; /* Ban đầu trái tim bị ẩn */
+  z-index: 2; /* Đảm bảo nó nằm trên các thành phần khác */
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: #1e90ff; /* Màu xanh dương */
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -50px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 50px;
+}
+
+.open .heart {
+  animation: heartbeat 0.1s infinite; /* Thêm hiệu ứng nhịp đập */
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+}
+/* CSS để hiệu ứng fade-out */
+body.fadeout {
+  background-color: black; /* Thay đổi nền trang thành màu đen */
+  animation: fadeOut 1s forwards; /* Áp dụng hiệu ứng fadeOut trong 1 giây và giữ trạng thái cuối cùng */
+  color: white; /* Đảm bảo chữ có thể đọc được trên nền đen */
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Đảm bảo rằng class 'hidden' ẩn phần tử */
+.hidden {
+  display: none;
 }
